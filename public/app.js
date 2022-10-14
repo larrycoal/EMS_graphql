@@ -1,6 +1,7 @@
 const EmployeeCreate = ({
   showAdd,
-  setShowAdd
+  setShowAdd,
+  AddNewEmployee
 }) => {
   const [formData, setFormData] = React.useState({});
   const [errorMessage, setErrorMessage] = React.useState(null);
@@ -35,7 +36,7 @@ const EmployeeCreate = ({
         age: parseInt(formData.age)
       };
       setShowAdd(false);
-      console.log(dataToSubmit);
+      AddNewEmployee(dataToSubmit);
     }
   };
   return /*#__PURE__*/React.createElement("div", {
@@ -145,7 +146,7 @@ const EmployeeCreate = ({
   }, errorMessage)));
 };
 const EmployeeSearch = () => {
-  return /*#__PURE__*/React.createElement("div", null, "Search all employees");
+  return /*#__PURE__*/React.createElement("h2", null, "Search all employees component");
 };
 const EmployeeTable = ({
   employeeList,
@@ -209,6 +210,44 @@ const EmployeeDirectory = () => {
     };
     fetchData();
   }, []);
+  const AddNewEmployee = async employeeDetails => {
+    const firstName = employeeDetails.firstName;
+    const lastName = employeeDetails.lastName;
+    const age = employeeDetails.age;
+    const startDate = employeeDetails.starteDate;
+    const title = employeeDetails.title;
+    const department = employeeDetails.department;
+    const employeeType = employeeDetails.employeeType;
+    const currentStatus = Boolean(employeeDetails.currentStatus);
+    console.log(employeeDetails);
+    const Mquery = `mutation{
+        addEmployee(firstName:"${firstName}",lastName:"${lastName}",age:${age},startDate:"${startDate}",title:"${title}",department:"${department}",employeeType:"${employeeType}",currentStatus:${currentStatus}){
+        firstName,
+        lastName,
+        age,
+        startDate,
+        title,
+        department,
+        employeeType,
+        currentStatus
+        }
+  }`;
+    await fetch("/graphql", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        Mquery
+      })
+    }).then(async response => {
+      let resp = await response.json();
+      if (resp.errors.length > 0) {
+        console.log(resp.errors[0].message);
+      }
+      console.log(resp);
+    });
+  };
   return /*#__PURE__*/React.createElement("div", {
     className: "employee__wrapper"
   }, /*#__PURE__*/React.createElement(EmployeeSearch, null), /*#__PURE__*/React.createElement(EmployeeTable, {
@@ -216,7 +255,8 @@ const EmployeeDirectory = () => {
     setShowAdd: setShowAdd
   }), /*#__PURE__*/React.createElement(EmployeeCreate, {
     showAdd: showAdd,
-    setShowAdd: setShowAdd
+    setShowAdd: setShowAdd,
+    AddNewEmployee: AddNewEmployee
   }));
 };
 const App = () => {

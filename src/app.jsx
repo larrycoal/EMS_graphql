@@ -1,4 +1,4 @@
-const EmployeeCreate = ({showAdd, setShowAdd}) => {
+const EmployeeCreate = ({ showAdd, setShowAdd, AddNewEmployee }) => {
   const [formData, setFormData] = React.useState({});
   const [errorMessage, setErrorMessage] = React.useState(null);
 
@@ -35,8 +35,8 @@ const EmployeeCreate = ({showAdd, setShowAdd}) => {
         currentStatus: 1,
         age: parseInt(formData.age),
       };
-      setShowAdd(false)
-      console.log(dataToSubmit);
+      setShowAdd(false);
+      AddNewEmployee(dataToSubmit)
     }
   };
   return (
@@ -130,7 +130,7 @@ const EmployeeCreate = ({showAdd, setShowAdd}) => {
           <div className="modal__action">
             <button>Add</button>
             <button
-            type="button"
+              type="button"
               onClick={() => {
                 setShowAdd(false);
               }}
@@ -146,7 +146,7 @@ const EmployeeCreate = ({showAdd, setShowAdd}) => {
 };
 
 const EmployeeSearch = () => {
-  return <div>Search all employees</div>;
+  return <h2>Search all employees component</h2>;
 };
 
 const EmployeeTable = ({ employeeList, setShowAdd }) => {
@@ -229,11 +229,51 @@ const EmployeeDirectory = () => {
     };
     fetchData();
   }, []);
+
+  const AddNewEmployee = async (employeeDetails) => {
+    const firstName = employeeDetails.firstName;
+    const lastName = employeeDetails.lastName;
+    const age = employeeDetails.age;
+    const startDate = employeeDetails.starteDate
+    const title = employeeDetails.title;
+    const department = employeeDetails.department;
+    const employeeType = employeeDetails.employeeType;
+    const currentStatus = Boolean(employeeDetails.currentStatus);
+    console.log(employeeDetails)
+    const Mquery = `mutation{
+        addEmployee(firstName:"${firstName}",lastName:"${lastName}",age:${age},startDate:"${startDate}",title:"${title}",department:"${department}",employeeType:"${employeeType}",currentStatus:${currentStatus}){
+        firstName,
+        lastName,
+        age,
+        startDate,
+        title,
+        department,
+        employeeType,
+        currentStatus
+        }
+  }`;
+     await fetch("/graphql", {
+       method: "POST",
+       headers: { "Content-Type": "application/json" },
+       body: JSON.stringify({ Mquery }),
+     }).then(async (response) => {
+       let resp = await response.json();
+       if (resp.errors.length > 0) {
+         console.log(resp.errors[0].message);
+       }
+
+       console.log(resp);
+     });
+  };
   return (
     <div className="employee__wrapper">
       <EmployeeSearch />
       <EmployeeTable employeeList={employees} setShowAdd={setShowAdd} />
-      <EmployeeCreate showAdd={showAdd} setShowAdd={setShowAdd} />
+      <EmployeeCreate
+        showAdd={showAdd}
+        setShowAdd={setShowAdd}
+        AddNewEmployee={AddNewEmployee}
+      />
     </div>
   );
 };
