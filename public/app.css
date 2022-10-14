@@ -1,0 +1,120 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+html,
+body,
+#root {
+  height: 100vh;
+}
+
+header {
+  padding: 10px 2rem;
+  box-shadow: 0px 3px 7px 0px #e3dfdf;
+}
+.employee__wrapper{
+    width: 90%;
+    margin: 0 auto;
+}
+.employee__table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.employee__table td, .employee__table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.employee__table tr:nth-child(even){background-color: #f2f2f2;}
+
+.employee__table tr:hover {background-color: #ddd;}
+
+.employee__table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #2a312f;
+  color: white;
+}
+.employee__table-wrapper{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.add_btn{
+    width: fit-content;
+    align-self: flex-end;
+    margin: 10px 0px;
+    padding: 8px;
+    background-color: #2a312f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+.employee__create-wrapper{
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+.employee__create-modal{
+    background-color: white;
+    width: fit-content;
+    margin: 10vh auto;
+}
+.modal__body{
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    gap: 10px;
+    font-size: 1.1rem;
+}
+.modal__body div{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.modal__body input,.modal__body select{
+    padding: 7px;
+    width: 300px;
+}
+.modal__header{
+    background-color: #2a312f;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    font-size: 1.2rem;
+}
+.modal__body .modal__action{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin: 10px 0;
+}
+.modal__action button{
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.modal__action button:nth-child(1){
+   background-color: #2a312f;
+   color: white;
+}
+.modal__action button:nth-child(2){
+    border: 1px solid #2a312f;
+    background-color: transparent;
+}
+.error{
+    margin: 5px;
+    text-align: center;
+    width: 100%;
+    color: red;
+}
